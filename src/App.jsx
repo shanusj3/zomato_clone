@@ -5,7 +5,7 @@ import Home from './pages/Home'
 
 const App = () => {
     return (
-        <div className='min-h-screen  px-5 md:px-32'>
+        <div className='min-h-screen bg-[#F8F8F8]'>
             <Navbar />
             <Routes>
                 <Route path='/' element={<Home />} />

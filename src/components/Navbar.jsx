@@ -2,16 +2,18 @@ import React, { isValidElement } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { GiScooter } from "react-icons/gi";
 import { NavLink } from 'react-router-dom';
+import { useProduct } from '../context';
 
 const Navbar = () => {
+    const { searchParam, setSearchParam, handleSearch } = useProduct()
     return (
-        <nav>
+        <nav className='px-3 md:px-36 bg-white'>
             <div className='flex justify-between items-center py-8 container mx-auto flex-col lg:flex-row gap-5 lg:gap-0'>
                 <span><h1 className='text-4xl font-extrabold italic text-blackCol'>zomato</h1></span>
-                <div className='w-full md:max-w-md gap-3 py-4 flex items-center shadow-md px-3 rounded-md border-[1px]'>
+                <form onSubmit={handleSearch} className='w-full md:max-w-md gap-3 py-4 flex items-center shadow-md px-3 rounded-md border-[1px]'>
                     <CiSearch className='text-3xl text-blackSe font-medium' />
-                    <input type="text" placeholder='Search for a dish' className='w-full outline-none text-blackPr' />
-                </div>
+                    <input type="text" placeholder='Search for a dish' className='w-full outline-none text-blackPr' value={searchParam} onChange={(e) => setSearchParam(e.target.value)} />
+                </form>
                 <div className='flex gap-4'>
                     <NavLink to="/" className="text-lg text-blackSe hover:text-blackPr">Home</NavLink>
                     <NavLink to="/cart" className="text-lg text-blackSe hover:text-blackPr">Cart</NavLink>
