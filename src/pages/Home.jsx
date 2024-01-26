@@ -7,13 +7,12 @@ import axios from 'axios'
 import { data } from 'autoprefixer'
 
 const Home = () => {
-    const { products, setProducts } = useProduct()
-    const [homeProducts, setHomeProducts] = useState([])
+    const { products, setProducts, show } = useProduct()
     const fetchProducts = async () => {
         try {
             const res = await axios.get('https://forkify-api.herokuapp.com/api/v2/recipes?search=chicken')
             if (res.data) {
-                setHomeProducts((res.data.data.recipes))
+                setProducts((res.data.data.recipes))
             }
 
 
@@ -25,17 +24,23 @@ const Home = () => {
         fetchProducts()
     }, [])
     return (
-        <div className='mt-9 bg-[#F8F8F8] px-3 md:px-36'>
-            <h1 className='text-3xl text-blackCol font-medium'>Inspiration for your first order</h1>
-            <div>
-                <FoodSlider />
-            </div>
+        <div className='mt-9 bg-[#F8F8F8] px-3 md:px-36'>{
+            show && (
+                <>
+                    <h1 className='text-3xl text-blackCol font-medium'>Inspiration for your first order</h1>
+                    <div>
+                        <FoodSlider />
+                    </div>
+                </>
+            )
+        }
+
             <h1 className='text-3xl text-blackCol font-medium mt-12'> Best Food for you</h1>
             <div className='flex flex-wrap items-center justify-center md:justify-between'>
 
 
                 {
-                    homeProducts.map((item) => (
+                    products.map((item) => (
 
                         <ItemCard recipes={item} key={item.id} />
 

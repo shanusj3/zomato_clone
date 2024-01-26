@@ -1,39 +1,44 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchAllProducts } from "../api-communication";
+import { createContext, useContext, useState } from "react";
 import axios from "axios";
 
-
-
-const GlobalState = createContext(null)
-
-
+const GlobalState = createContext(null);
 
 export const GlobalStateProvider = ({ children }) => {
-    const [searchParam, setSearchParam] = useState("")
-    const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState("")
+    const [searchParam, setSearchParam] = useState("");
+    const [products, setProducts] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null)
+    const [show, setShow] = useState(true)
+    const [favarite, setFavarite] = useState([])
+
 
 
 
     async function handleSearch(e) {
-        const navigate = useNavigate()
-        e.preventDefault()
+        e.preventDefault();
         try {
             console.log(searchParam);
-            const res = await axios.get(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${searchParam}`)
+            const res = await axios.get(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${searchParam}`);
             console.log(res.data.data.recipes);
             if (res.data.data.recipes) {
-                setProducts(res.data.data.recipes)
-
+                setProducts(res.data.data.recipes);
+                setShow(false)
             }
-
-            navigate('/search')
-            setSearchParam("")
+            setSearchParam("");
         } catch (error) {
-
+            setError(error.message);
         }
+    }
+
+    async function AddToFavarite(item) {
+        let copyFavarites = [...favarite]
+        const index = copyFavarites.findIndex((val) => val.id === item.id)
+        if (index === -1) {
+            copyFavarites.push(item)
+
+        } else {
+            copyFavarites.splice(index)
+        }
+        setFavarite(copyFavarites)
     }
 
     const value = {
@@ -42,11 +47,16 @@ export const GlobalStateProvider = ({ children }) => {
         products,
         setProducts,
         handleSearch,
-    }
+        show,
+        setShow,
+        selectedItem,
+        setSelectedItem,
+        favarite,
+        setFavarite,
+        AddToFavarite
+    };
 
+    return <GlobalState.Provider value={value}>{children}</GlobalState.Provider>;
+};
 
-    return <GlobalState.Provider value={value}>{children}</ GlobalState.Provider>
-
-}
-
-export const useProduct = () => useContext(GlobalState)
+export const useProduct = () => useContext(GlobalState);

@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import SearchPage from './pages/SearchPage'
+import DetailsPage from './pages/DetailsPage'
+import AddToFavarite from './pages/AddToFavarite'
 
 const App = () => {
     return (
@@ -11,6 +13,8 @@ const App = () => {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/search' element={<SearchPage />} />
+                <Route path='/recipe-item/:id' element={<DetailsPage />} />
+                <Route path='/cart' element={<AddToFavarite />} />
             </Routes>
         </div>
     )
