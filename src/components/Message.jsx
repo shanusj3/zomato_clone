@@ -1,5 +1,5 @@
 import React from 'react'
-import MessageImg from "../../public/assets/z404x2.avif"
+import MessageImg from "/assets/z404x2.avif"
 
 const Message = ({ message }) => {
     return (
